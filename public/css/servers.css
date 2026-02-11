@@ -1,0 +1,81 @@
+body {
+    background-color: #1e1e1e;
+    font-family: Arial, sans-serif;
+    color: #f5f5f5;
+    margin: 0;
+    padding: 0;
+}
+
+h1 {
+    text-align: center;
+    padding: 30px;
+    color: #4ade80;
+}
+
+h2 {
+    text-align: center;
+    padding: 30px;
+    color: #ffffff;
+}
+
+ul {
+    list-style: none;
+    padding: 0;
+    max-width: 600px;
+    margin: 20px auto;
+}
+
+ul li {
+    background: #2a2a2a;
+    padding: 15px;
+    margin-bottom: 10px;
+    border-radius: 8px;
+    border: 1px solid #333;
+}
+
+button {
+    display: block;
+    margin: 30px auto;
+    padding: 12px 20px;
+    background-color: #22c55e;
+    border: none;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+    color: white;
+    transition: 0.2s;
+}
+
+button:hover {
+    background-color: #16a34a;
+}
+
+#createServerForm {
+    max-width: 500px;
+    margin: 20px auto;
+    background: #2a2a2a;
+    padding: 20px;
+    border-radius: 8px;
+    border: 1px solid #333;
+}
+
+input {
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+    margin-bottom: 15px;
+    background: #1a1a1a;
+    border: 1px solid #444;
+    border-radius: 4px;
+    color: white;
+}
+
+input:focus {
+    outline: none;
+    border-color: #22c55e;
+}
+
+#price {
+    color: #4ade80;
+    font-weight: bold;
+}

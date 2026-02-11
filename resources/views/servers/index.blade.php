@@ -4,15 +4,14 @@
     <meta charset="UTF-8">
     <title>Mes serveurs</title>
 
-    {{-- Vite --}}
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <link rel="stylesheet" href="{{ asset('css/servers.css') }}">
 </head>
 <body>
 
 <h1>Mes serveurs</h1>
 
 @if(count($servers) === 0)
-    <p>Aucun serveur pour le moment</p>
+    <h2>Aucun serveur pour le moment</h2>
 @else
     <ul>
         @foreach($servers as $server)

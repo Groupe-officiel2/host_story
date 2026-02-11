@@ -1,10 +1,11 @@
-/* document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', () => {
+
     const openBtn = document.getElementById('openCreateServer');
     const form = document.getElementById('createServerForm');
 
     if (openBtn && form) {
         openBtn.addEventListener('click', () => {
-            form.style.display = form.style.display === 'none' ? 'block' : 'none';
+            form.classList.toggle('hidden');
         });
     }
 
@@ -18,5 +19,5 @@
             priceSpan.innerText = price + ' €';
         });
     }
+
 });
-*/
