@@ -1,0 +1,61 @@
+/* Fond général */
+body {
+    background-color: #000000;
+    color: white;
+    font-family: Arial, Helvetica, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+/* Titre principal */
+.page-title {
+    text-align: center;
+    font-size: 34px;
+    margin-top: 30px;
+    margin-bottom: 40px;
+
+    /* même vert que bouton */
+    color: #2ecc71;
+}
+
+/* Carte serveur */
+.server-card {
+    width: 80%;
+    margin: 20px auto;
+    padding: 18px;
+
+    background-color: #111;
+    border-radius: 8px;
+
+    /* Ombre verte foncée */
+    box-shadow: 0 0 12px rgba(46, 204, 113, 0.45);
+
+    transition: 0.2s;
+}
+
+/* Effet hover léger */
+.server-card:hover {
+    transform: scale(1.02);
+    box-shadow: 0 0 18px rgba(46, 204, 113, 0.7);
+}
+
+/* Bouton accéder */
+.access-btn {
+    margin-top: 12px;
+    padding: 8px 18px;
+
+    background-color: #2ecc71;
+    border: none;
+    border-radius: 5px;
+
+    color: black;
+    font-weight: bold;
+    cursor: pointer;
+
+    transition: 0.2s;
+}
+
+/* Hover bouton */
+.access-btn:hover {
+    background-color: #3cff8f;
+}

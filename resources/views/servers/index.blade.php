@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <title>Mes serveurs</title>
 
-    @vite(['resources/css/app.scss/app.css'])
+    <link rel="stylesheet" href="{{ asset('css/adminServers.css') }}">
 </head>
 
 <body>
