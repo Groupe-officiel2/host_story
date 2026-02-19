@@ -22,9 +22,9 @@ Route::middleware('guest')->group(function () {
 
 // --- (Espace Membre) ---
 Route::middleware('auth')->group(function () {
-    Route::get('/dashboard', function () {
-        return view('dashboard');
-    })->name('dashboard');
+    Route::get('/welcome', function () {
+        return view('welcome');
+    })->name('welcome');
 
     Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 });
