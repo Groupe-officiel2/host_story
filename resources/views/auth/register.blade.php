@@ -16,21 +16,21 @@
             <form method="POST" action="{{ route('register') }}">
                 @csrf
                 <div class="vs-group">
-                    <label class="vs-label">Nom du Seraph (Votre Pseudo)</label>
+                    <label class="vs-label"> Votre Pseudo</label>
                     <input type="text" name="name" class="vs-input" required autofocus>
                 </div>
 
                 <div class="vs-group">
-                    <label class="vs-label">Missive (Votre Email)</label>
+                    <label class="vs-label">Votre adresse email</label>
                     <input type="email" name="email" class="vs-input" required>
                 </div>
 
                 <div class="vs-group">
-                    <label class="vs-label">Sceau Secret (Votre mot de passe)</label>
+                    <label class="vs-label">Votre mot de passe</label>
                     <input type="password" name="password" class="vs-input" required>
                 </div>
 
-                <button type="submit" class="vs-button">Forger mon destin (S'inscrire)</button>
+                <button type="submit" class="vs-button">S'inscrire</button>
 
                 <a href="{{ route('login') }}" class="vs-link">Déjà membre de la guilde ? (Se connecter)</a>
             </form>
