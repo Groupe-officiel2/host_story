@@ -22,11 +22,16 @@ Route::middleware('auth')->group(function () {
         return view('dashboard');
     })->name('dashboard');
 
-    // Déconnexion
+    // Déconnexion de l'utilisateur
     Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
+    // Mise à jour du compte
+    Route::put('/account/update', [LoginController::class, 'updateProfile'])->name('account.update');
+
+    // Suppression de compte
+    Route::delete('/account/destroy', [LoginController::class, 'destroy'])->name('account.destroy');
 });
 
-// Optionnel : Une redirection simple si quelqu'un tape juste '/'
+// Une redirection pour '/'
 Route::get('/', function () {
     return redirect()->route('register');
 });
