@@ -1,0 +1,114 @@
+/* servers.css unifié */
+
+body {
+    background-color: #000;
+    color: white;
+    font-family: Arial, Helvetica, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+/* TITRE PRINCIPAL */
+.page-title {
+    text-align: center;
+    font-size: 34px;
+    margin: 30px 0 40px;
+    color: #2ecc71; /* vert lumineux */
+}
+
+/* TITRES SECONDAIRES (ex: Aucun serveur ou formulaire) */
+h2 {
+    text-align: center;
+    color: #ffffff;
+    margin: 20px 0;
+}
+
+/* FORMULAIRE CREATION SERVEUR */
+#createServerForm {
+    max-width: 500px;
+    margin: 20px auto;
+    background: #111;
+    padding: 25px;
+    border-radius: 8px;
+    box-shadow: 0 0 14px rgba(46, 204, 113, 0.45);
+}
+
+#createServerForm input {
+    width: 100%;
+    padding: 10px;
+    margin: 5px 0 15px 0;
+    background: #000;
+    border: 1px solid #444;
+    border-radius: 4px;
+    color: white;
+}
+
+#createServerForm input:focus {
+    outline: none;
+    border-color: #2ecc71;
+}
+
+#price {
+    color: #2ecc71;
+    font-weight: bold;
+    font-size: 18px;
+}
+
+/* BOUTON CREATION SERVEUR */
+#createServerForm button,
+#openCreateServer {
+    display: block;
+    margin: 20px auto;
+    padding: 12px 22px;
+    background-color: #2ecc71;
+    border: none;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+    color: black;
+    transition: 0.2s;
+}
+
+#createServerForm button:hover,
+#openCreateServer:hover {
+    background-color: #3cff8f;
+    transform: scale(1.05);
+}
+
+/* LISTE DES SERVEURS */
+.server-card {
+    width: 80%;
+    margin: 20px auto;
+    padding: 18px;
+    background-color: #111;
+    border-radius: 8px;
+    box-shadow: 0 0 12px rgba(46, 204, 113, 0.45);
+    transition: 0.2s;
+}
+
+.server-card:hover {
+    transform: scale(1.02);
+    box-shadow: 0 0 18px rgba(46, 204, 113, 0.7);
+}
+
+.server-card p {
+    margin: 8px 0;
+}
+
+/* BOUTON ACCEDER */
+.access-btn {
+    margin-top: 12px;
+    padding: 8px 18px;
+    background-color: #2ecc71;
+    border: none;
+    border-radius: 5px;
+    color: black;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.access-btn:hover {
+    background-color: #3cff8f;
+    transform: scale(1.05);
+}
