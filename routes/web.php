@@ -4,11 +4,6 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\LoginController;
 
-// --- (Accès Public) ---
-Route::get('/', function () {
-    return view('welcome');
-})->name('home');
-
 // --- (Authentification) ---
 Route::middleware('guest')->group(function () {
     // Inscription
@@ -22,9 +17,16 @@ Route::middleware('guest')->group(function () {
 
 // --- (Espace Membre) ---
 Route::middleware('auth')->group(function () {
-    Route::get('/welcome', function () {
-        return view('welcome');
-    })->name('welcome');
+    // Page d'accueil après connexion (Dashboard)
+    Route::get('/dashboard', function () {
+        return view('dashboard');
+    })->name('dashboard');
 
+    // Déconnexion
     Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
+});
+
+// Optionnel : Une redirection simple si quelqu'un tape juste '/'
+Route::get('/', function () {
+    return redirect()->route('register');
 });

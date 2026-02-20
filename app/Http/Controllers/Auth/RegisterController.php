@@ -34,6 +34,6 @@ class RegisterController extends Controller
         Auth::login($user);
 
         return redirect()->route('dashboard')   
-            ->with('status', 'Votre voyage commence, Seraph. Préparez vos outils.');
+            ->with('status', 'Votre voyage commence, préparez vos outils.');
     }
 }   
