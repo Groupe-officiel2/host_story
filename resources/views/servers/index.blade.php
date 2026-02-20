@@ -4,24 +4,18 @@
     <meta charset="UTF-8">
     <title>Mes serveurs</title>
 
+    {{-- CSS principal --}}
     <link rel="stylesheet" href="{{ asset('css/servers.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/adminServers.css') }}">
 </head>
+
 <body>
 
-<h1>Mes serveurs</h1>
+<h1 class="page-title">Mes serveurs</h1>
 
-@if(count($servers) === 0)
-    <h2>Aucun serveur pour le moment</h2>
-@else
-    <ul>
-        @foreach($servers as $server)
-            <li>{{ $server->name }}</li>
-        @endforeach
-    </ul>
-@endif
-
-<hr>
-
+{{-- ============================= --}}
+{{-- BOUTON CREATION SERVEUR --}}
+{{-- ============================= --}}
 <button id="openCreateServer">
     Louer un serveur
 </button>
@@ -51,6 +45,50 @@
         <button type="submit">Créer le serveur</button>
     </form>
 </div>
+
+<hr>
+
+{{-- ============================= --}}
+{{-- LISTE DES SERVEURS --}}
+{{-- ============================= --}}
+
+@if(count($servers) === 0)
+    <h2>Aucun serveur pour le moment</h2>
+@else
+
+    @foreach($servers as $server)
+
+        <div class="server-card">
+
+            <p>
+                <strong>Nom :</strong>
+                {{ $server->name }}
+            </p>
+
+            <p>
+                <strong>Joueurs :</strong>
+                {{ $server->players }} / {{ $server->slots }}
+            </p>
+
+            <p>
+                <strong>ID :</strong>
+                {{ $server->id }}
+            </p>
+
+            <button class="access-btn">
+                Accéder
+            </button>
+
+        </div>
+
+    @endforeach
+
+@endif
+
+
+{{-- ============================= --}}
+{{-- SCRIPT --}}
+{{-- ============================= --}}
 
 <script>
     document.getElementById('openCreateServer').addEventListener('click', () => {
