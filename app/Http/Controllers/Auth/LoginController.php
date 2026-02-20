@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
 
@@ -45,7 +47,7 @@ class LoginController extends Controller
         return redirect()->route('register');
     }
 
-    public function update (Request $request)
+    public function updateProfile (Request $request)
     {
         $user = $request->user();
 
@@ -54,7 +56,7 @@ class LoginController extends Controller
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email,' . $user->id],
             'password' => ['nullable', 'string', 'min:5'],
         ]);
-        
+
         $user->name = $request->name;
         $user->email = $request->email;
 

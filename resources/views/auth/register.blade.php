@@ -1,4 +1,4 @@
-<x-guest-layout>
+<x-registration-layout>
     <div class="vs-wrapper">
         <div class="vs-container">
             <h1 class="vs-title">Nouveau Survivant</h1>
@@ -36,4 +36,4 @@
             </form>
         </div>
     </div>
-</x-guest-layout>
+</x-registration-layout>
