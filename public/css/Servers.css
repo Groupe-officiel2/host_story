@@ -1,250 +1,255 @@
-/* BODY + LAYOUT GENERAL */
+/* ============================= */
+/* IMPORT POLICE                 */
+/* ============================= */
+@import url('https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,400;0,700;1,400&display=swap');
+
+:root {
+    --vs-bg-dark: #1a1614;
+    --vs-panel: #2d241f;
+    --vs-border: #5c4a3f;
+    --vs-input-bg: #1e1a17;
+    --vs-text-parchment: #e2c9b0;
+    --vs-text-muted: #a69382;
+    --vs-accent: #8e7a68;
+}
+
+/* ============================= */
+/* BODY                          */
+/* ============================= */
 body {
     margin: 0;
     padding: 0;
-    font-family: Arial, Helvetica, sans-serif;
-    background-color: #000;
-    color: #fff;
+    font-family: 'Crimson Pro', serif;
+    background-color: var(--vs-bg-dark);
+    background-image: url('https://www.vintagestory.at/uploads/monthly_2023_05/bg-stone.jpg');
+    background-blend-mode: overlay;
+    color: var(--vs-text-parchment);
     transition: filter 0.3s;
 }
 
 body.modal-open .page-container {
-    filter: blur(4px); /* flou fond modal */
+    filter: blur(4px);
 }
 
-/* CONTAINER PRINCIPAL */
+/* ============================= */
+/* LAYOUT PRINCIPAL              */
+/* ============================= */
 .page-container {
     display: flex;
     min-height: 100vh;
-    gap: 20px;
-    padding: 20px;
+    gap: 30px;
+    padding: 40px;
 }
 
-/* CONTAINER DE LA COLONNE SERVERS */
+/* ============================= */
+/* COLONNE SERVERS               */
+/* ============================= */
 .servers-list {
     flex: 3;
     display: flex;
     flex-direction: column;
-    background-color: #111;
-    border-radius: 10px;
-    box-shadow: 0 0 15px rgba(46,204,113,0.5);
-    overflow: hidden; /* important pour que le sticky reste dans la colonne */
-    height: 95vh;     /* limite la hauteur pour activer scroll */
+    background: var(--vs-panel);
+    border: 4px solid var(--vs-border);
+    box-shadow: 0 0 30px rgba(0,0,0,0.8);
+    overflow: hidden;
+    height: 90vh;
 }
 
-/* HEADER STICKY RELATIF À LA COLONNE */
+/* TITRE */
 .servers-list .page-title {
-    position: sticky;  /* sticky par rapport à la colonne */
-    top: 0;            /* collé en haut de la colonne */
-    background-color: #111;
-    padding: 15px 0;
     text-align: center;
-    border-bottom: 1px solid #2ecc71;
-    color: #2ecc71;
-    font-size: 24px;
-    z-index: 5;        /* au-dessus de la liste */
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    border-bottom: 2px solid var(--vs-border);
+    padding: 20px;
+    font-size: 1.6rem;
 }
 
-/* SCROLLABLE */
+/* SCROLL */
 .servers-scroll {
     overflow-y: auto;
-    flex: 1;           /* prend tout le reste de la colonne */
-    padding: 10px 0;
+    flex: 1;
+    padding: 20px;
 }
 
-
-
-/* CARTES SERVERS */
+/* ============================= */
+/* CARTE SERVEUR                 */
+/* ============================= */
 .server-card {
-    background-color: #1a1a1a;
-    margin: 10px auto;
-    padding: 12px 15px;
-    border-radius: 8px;
-    box-shadow: 0 0 8px rgba(46,204,113,0.3);
-    transition: 0.2s;
-    margin-left: 20px;
-    margin-right: 20px;
+    background: var(--vs-input-bg);
+    border: 2px solid var(--vs-border);
+    padding: 15px;
+    margin-bottom: 15px;
+    transition: all 0.2s;
 }
 
 .server-card:hover {
-    transform: scale(1.02);
-    box-shadow: 0 0 15px rgba(46,204,113,0.7);
+    border-color: var(--vs-accent);
+    transform: translateY(-3px);
 }
 
 .server-card p {
-    margin: 4px 0;
+    margin: 6px 0;
 }
 
+/* BOUTON ACCÉDER */
 .access-btn {
-    margin-top: 8px;
-    padding: 6px 14px;
-    background-color: #2ecc71;
+    margin-top: 10px;
+    width: 100%;
+    background: var(--vs-border);
+    color: var(--vs-text-parchment);
     border: none;
-    border-radius: 5px;
-    color: black;
+    border-bottom: 4px solid #3d2e28;
+    padding: 10px;
+    text-transform: uppercase;
     font-weight: bold;
+    font-family: inherit;
     cursor: pointer;
-    transition: 0.2s;
+    transition: all 0.1s;
 }
 
 .access-btn:hover {
-    background-color: #3cff8f;
-    transform: scale(1.05);
+    background: var(--vs-accent);
 }
 
-/* SIDE PANEL CREATION */
+.access-btn:active {
+    border-bottom-width: 0;
+    transform: translateY(4px);
+}
+
+/* ============================= */
+/* PANNEAU LOUER SERVEUR         */
+/* ============================= */
 .side-panel {
     flex: 1;
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
-    position: sticky;
-    top: 0;
 }
 
 .create-server-box {
-    background-color: #111;
-    padding: 20px 25px;
-    border-radius: 12px;
-    box-shadow: 0 0 15px rgba(46,204,113,0.5);
+    width: 100%;
+    max-width: 320px;
+    background: var(--vs-panel);
+    border: 4px solid var(--vs-border);
+    padding: 25px;
     text-align: center;
-    max-width: 300px;
+    box-shadow: 0 0 30px rgba(0,0,0,0.8);
 }
 
 .create-server-text {
-    color: #fff;
+    color: var(--vs-text-muted);
     margin-bottom: 15px;
-    font-size: 14px;
+    text-transform: uppercase;
+    font-size: 0.9rem;
 }
 
+/* BOUTON LOUER */
 .create-server-box button {
-    display: block;
     width: 100%;
-    padding: 12px;
-    background-color: #2ecc71;
+    background: var(--vs-border);
+    color: var(--vs-text-parchment);
     border: none;
-    border-radius: 6px;
-    color: black;
+    border-bottom: 4px solid #3d2e28;
+    padding: 12px;
+    text-transform: uppercase;
     font-weight: bold;
+    font-family: inherit;
     cursor: pointer;
-    transition: 0.2s;
+    transition: all 0.1s;
 }
 
 .create-server-box button:hover {
-    background-color: #3cff8f;
-    transform: scale(1.05);
+    background: var(--vs-accent);
 }
 
-/* MODAL CREATION SERVEUR */
+.create-server-box button:active {
+    border-bottom-width: 0;
+    transform: translateY(4px);
+}
+
+/* ============================= */
+/* MODAL                         */
+/* ============================= */
 .modal {
     display: none;
     position: fixed;
-    top:0;
-    left:0;
-    width:100%;
-    height:100vh;
-    background-color: rgba(0,0,0,0.6);
+    inset: 0;
+    background: rgba(0,0,0,0.7);
     justify-content: center;
     align-items: center;
     z-index: 100;
 }
 
 .modal-content {
-    background-color: #111;
+    background: var(--vs-panel);
+    border: 4px solid var(--vs-border);
     padding: 30px;
-    border-radius: 10px;
     width: 400px;
     max-width: 90%;
-    color: #fff;
-    position: relative;
-    box-shadow: 0 0 20px rgba(46,204,113,0.5);
-    border: 1px solid #2ecc71;
-}
-
-.modal-content .close {
-    position: absolute;
-    top: 10px;
-    right: 15px;
-    font-size: 24px;
-    font-weight: bold;
-    cursor: pointer;
-    color: #2ecc71;
+    box-shadow: 0 0 40px rgba(0,0,0,0.9);
 }
 
 .modal-content h2 {
     text-align: center;
+    text-transform: uppercase;
+    border-bottom: 2px solid var(--vs-border);
+    padding-bottom: 10px;
     margin-bottom: 20px;
-    color: #2ecc71;
 }
 
 .modal-content input {
     width: 100%;
+    background: var(--vs-input-bg);
+    border: 2px solid var(--vs-border);
     padding: 10px;
-    margin: 5px 0 15px 0;
-    background: #1a1a1a;
-    border: 1px solid #444;
-    border-radius: 4px;
-    color: white;
+    margin-bottom: 15px;
+    color: var(--vs-text-parchment);
+    font-family: inherit;
 }
 
 .modal-content input:focus {
     outline: none;
-    border-color: #2ecc71;
+    border-color: var(--vs-accent);
 }
 
 .modal-content button {
     width: 100%;
-    padding: 12px;
-    background-color: #2ecc71;
+    background: var(--vs-border);
+    color: var(--vs-text-parchment);
     border: none;
-    border-radius: 6px;
-    color: black;
+    border-bottom: 4px solid #3d2e28;
+    padding: 12px;
+    text-transform: uppercase;
     font-weight: bold;
+    font-family: inherit;
     cursor: pointer;
-    transition: 0.2s;
 }
 
 .modal-content button:hover {
-    background-color: #3cff8f;
-    transform: scale(1.05);
+    background: var(--vs-accent);
 }
 
 /* ============================= */
-/* RESPONSIVE MOBILE FIX FINAL   */
+/* RESPONSIVE                    */
 /* ============================= */
 @media (max-width: 768px) {
 
-    /* On passe en colonne (pas block) */
     .page-container {
-        display: flex !important;
-        flex-direction: column !important;
+        flex-direction: column;
+        padding: 20px;
     }
 
-    /* Louer serveur en premier */
     .side-panel {
         order: -1;
-        width: 100%;
-        height: auto;
-        position: relative;
         margin-bottom: 20px;
     }
 
-    /* Mes serveurs en dessous */
     .servers-list {
-        order: 0;
-        width: 100%;
         height: auto;
     }
 
-    /* Désactive le scroll interne mobile */
     .servers-scroll {
         overflow: visible;
-        max-height: none;
-    }
-
-    .create-server-box {
-        max-width: 100%;
-        width: 100%;
     }
 }
