@@ -10,14 +10,14 @@ class ServerController extends Controller
 {
     public function index()
     {
-        // Simulation serveurs existants (Story 4)
         $servers = [
             new ServerDTO(1, "Pokemon", 4, 5),
             new ServerDTO(2, "Survival", 2, 10),
+            new ServerDTO(1, "Minecraft", 6, 20),
+            new ServerDTO(2, "Arc", 3, 10),
+            new ServerDTO(1, "GAT", 30, 50),
         ];
 
-        // Simulation DTO création (Story 3.2)
-        // (sert juste à montrer que l’objet existe dans l’archi)
         $exampleDTO = new CreateServerDTO("Test", 5);
 
         return view('servers.index', compact('servers'));

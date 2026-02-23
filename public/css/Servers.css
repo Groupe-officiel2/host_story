@@ -1,104 +1,83 @@
-/* servers.css unifié */
-
+/* BODY + LAYOUT GENERAL */
 body {
-    background-color: #000;
-    color: white;
-    font-family: Arial, Helvetica, sans-serif;
     margin: 0;
     padding: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: #000;
+    color: #fff;
+    transition: filter 0.3s;
 }
 
-/* TITRE PRINCIPAL */
-.page-title {
-    text-align: center;
-    font-size: 34px;
-    margin: 30px 0 40px;
-    color: #2ecc71; /* vert lumineux */
+body.modal-open .page-container {
+    filter: blur(4px); /* flou fond modal */
 }
 
-/* TITRES SECONDAIRES (ex: Aucun serveur ou formulaire) */
-h2 {
-    text-align: center;
-    color: #ffffff;
-    margin: 20px 0;
+/* CONTAINER PRINCIPAL */
+.page-container {
+    display: flex;
+    min-height: 100vh;
+    gap: 20px;
+    padding: 20px;
 }
 
-/* FORMULAIRE CREATION SERVEUR */
-#createServerForm {
-    max-width: 500px;
-    margin: 20px auto;
-    background: #111;
-    padding: 25px;
-    border-radius: 8px;
-    box-shadow: 0 0 14px rgba(46, 204, 113, 0.45);
-}
-
-#createServerForm input {
-    width: 100%;
-    padding: 10px;
-    margin: 5px 0 15px 0;
-    background: #000;
-    border: 1px solid #444;
-    border-radius: 4px;
-    color: white;
-}
-
-#createServerForm input:focus {
-    outline: none;
-    border-color: #2ecc71;
-}
-
-#price {
-    color: #2ecc71;
-    font-weight: bold;
-    font-size: 18px;
-}
-
-/* BOUTON CREATION SERVEUR */
-#createServerForm button,
-#openCreateServer {
-    display: block;
-    margin: 20px auto;
-    padding: 12px 22px;
-    background-color: #2ecc71;
-    border: none;
-    border-radius: 6px;
-    font-weight: bold;
-    cursor: pointer;
-    color: black;
-    transition: 0.2s;
-}
-
-#createServerForm button:hover,
-#openCreateServer:hover {
-    background-color: #3cff8f;
-    transform: scale(1.05);
-}
-
-/* LISTE DES SERVEURS */
-.server-card {
-    width: 80%;
-    margin: 20px auto;
-    padding: 18px;
+/* CONTAINER DE LA COLONNE SERVERS */
+.servers-list {
+    flex: 3;
+    display: flex;
+    flex-direction: column;
     background-color: #111;
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(46,204,113,0.5);
+    overflow: hidden; /* important pour que le sticky reste dans la colonne */
+    height: 95vh;     /* limite la hauteur pour activer scroll */
+}
+
+/* HEADER STICKY RELATIF À LA COLONNE */
+.servers-list .page-title {
+    position: sticky;  /* sticky par rapport à la colonne */
+    top: 0;            /* collé en haut de la colonne */
+    background-color: #111;
+    padding: 15px 0;
+    text-align: center;
+    border-bottom: 1px solid #2ecc71;
+    color: #2ecc71;
+    font-size: 24px;
+    z-index: 5;        /* au-dessus de la liste */
+}
+
+/* SCROLLABLE */
+.servers-scroll {
+    overflow-y: auto;
+    flex: 1;           /* prend tout le reste de la colonne */
+    padding: 10px 0;
+}
+
+
+
+/* CARTES SERVERS */
+.server-card {
+    background-color: #1a1a1a;
+    margin: 10px auto;
+    padding: 12px 15px;
     border-radius: 8px;
-    box-shadow: 0 0 12px rgba(46, 204, 113, 0.45);
+    box-shadow: 0 0 8px rgba(46,204,113,0.3);
     transition: 0.2s;
+    margin-left: 20px;
+    margin-right: 20px;
 }
 
 .server-card:hover {
     transform: scale(1.02);
-    box-shadow: 0 0 18px rgba(46, 204, 113, 0.7);
+    box-shadow: 0 0 15px rgba(46,204,113,0.7);
 }
 
 .server-card p {
-    margin: 8px 0;
+    margin: 4px 0;
 }
 
-/* BOUTON ACCEDER */
 .access-btn {
-    margin-top: 12px;
-    padding: 8px 18px;
+    margin-top: 8px;
+    padding: 6px 14px;
     background-color: #2ecc71;
     border: none;
     border-radius: 5px;
@@ -111,4 +90,161 @@ h2 {
 .access-btn:hover {
     background-color: #3cff8f;
     transform: scale(1.05);
+}
+
+/* SIDE PANEL CREATION */
+.side-panel {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    position: sticky;
+    top: 0;
+}
+
+.create-server-box {
+    background-color: #111;
+    padding: 20px 25px;
+    border-radius: 12px;
+    box-shadow: 0 0 15px rgba(46,204,113,0.5);
+    text-align: center;
+    max-width: 300px;
+}
+
+.create-server-text {
+    color: #fff;
+    margin-bottom: 15px;
+    font-size: 14px;
+}
+
+.create-server-box button {
+    display: block;
+    width: 100%;
+    padding: 12px;
+    background-color: #2ecc71;
+    border: none;
+    border-radius: 6px;
+    color: black;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.create-server-box button:hover {
+    background-color: #3cff8f;
+    transform: scale(1.05);
+}
+
+/* MODAL CREATION SERVEUR */
+.modal {
+    display: none;
+    position: fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100vh;
+    background-color: rgba(0,0,0,0.6);
+    justify-content: center;
+    align-items: center;
+    z-index: 100;
+}
+
+.modal-content {
+    background-color: #111;
+    padding: 30px;
+    border-radius: 10px;
+    width: 400px;
+    max-width: 90%;
+    color: #fff;
+    position: relative;
+    box-shadow: 0 0 20px rgba(46,204,113,0.5);
+    border: 1px solid #2ecc71;
+}
+
+.modal-content .close {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 24px;
+    font-weight: bold;
+    cursor: pointer;
+    color: #2ecc71;
+}
+
+.modal-content h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #2ecc71;
+}
+
+.modal-content input {
+    width: 100%;
+    padding: 10px;
+    margin: 5px 0 15px 0;
+    background: #1a1a1a;
+    border: 1px solid #444;
+    border-radius: 4px;
+    color: white;
+}
+
+.modal-content input:focus {
+    outline: none;
+    border-color: #2ecc71;
+}
+
+.modal-content button {
+    width: 100%;
+    padding: 12px;
+    background-color: #2ecc71;
+    border: none;
+    border-radius: 6px;
+    color: black;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.modal-content button:hover {
+    background-color: #3cff8f;
+    transform: scale(1.05);
+}
+
+/* ============================= */
+/* RESPONSIVE MOBILE FIX FINAL   */
+/* ============================= */
+@media (max-width: 768px) {
+
+    /* On passe en colonne (pas block) */
+    .page-container {
+        display: flex !important;
+        flex-direction: column !important;
+    }
+
+    /* Louer serveur en premier */
+    .side-panel {
+        order: -1;
+        width: 100%;
+        height: auto;
+        position: relative;
+        margin-bottom: 20px;
+    }
+
+    /* Mes serveurs en dessous */
+    .servers-list {
+        order: 0;
+        width: 100%;
+        height: auto;
+    }
+
+    /* Désactive le scroll interne mobile */
+    .servers-scroll {
+        overflow: visible;
+        max-height: none;
+    }
+
+    .create-server-box {
+        max-width: 100%;
+        width: 100%;
+    }
 }
