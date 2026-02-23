@@ -52,7 +52,7 @@ services:
     image: axllent/mailpit:latest
     container_name: hoststory-mailpit
     ports:
-      - "8025:8025"
+      - "8026:8025"
       - "1025:1025"
     networks:
       - hoststory

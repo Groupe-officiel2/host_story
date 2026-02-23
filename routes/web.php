@@ -35,3 +35,6 @@ Route::middleware('auth')->group(function () {
 Route::get('/', function () {
     return redirect()->route('register');
 });
+
+Route::get('/servers', [ServerController::class, 'index'])
+    ->name('servers.index');
