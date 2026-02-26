@@ -19,9 +19,9 @@ Route::middleware('guest')->group(function () {
 // --- (Espace Membre) ---
 Route::middleware('auth')->group(function () {
     // Page d'accueil après connexion (Dashboard)
-    Route::get('/dashboard', function () {
-        return view('dashboard');
-    })->name('dashboard');
+    Route::get('/dashboard', [ServerController::class, 'index'])
+        ->name('dashboard');
+
 
     // Déconnexion de l'utilisateur
     Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
@@ -37,5 +37,4 @@ Route::get('/', function () {
     return redirect()->route('register');
 });
 
-Route::get('/servers', [ServerController::class, 'index'])
-    ->name('servers.index');
+

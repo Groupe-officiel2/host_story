@@ -42,7 +42,7 @@
         .vs-button-logout:active { border-bottom-width: 0; transform: translateY(4px); }
 
         /* Engrenage */
-        .vs-gear-btn { position: fixed; top: 25px; right: 30px; background: rgba(45, 36, 31, 0.8); border: 2px solid var(--vs-border); border-radius: 5px; padding: 8px; cursor: pointer; z-index: 50; box-shadow: 0 0 10px rgba(0,0,0,0.5); transition: all 0.3s ease; }
+        .vs-gear-btn { position: fixed; top: 25px; right: 30px; background: rgba(45, 36, 31, 0.8); border: 2px solid var(--vs-border); border-radius: 5px; padding: 8px; cursor: pointer; z-index: 9999; box-shadow: 0 0 10px rgba(0,0,0,0.5); transition: all 0.3s ease; pointer-events: auto;}
         .vs-gear-btn svg { width: 35px; height: 35px; fill: var(--vs-accent); transition: transform 0.5s ease, fill 0.3s; display: block; }
         .vs-gear-btn:hover { background: var(--vs-panel); border-color: var(--vs-accent); }
         .vs-gear-btn:hover svg { transform: rotate(90deg); fill: var(--vs-text-parchment); }
@@ -55,10 +55,10 @@
 /* NOUVEAU STYLE : BOUTON CARRÉ STYLE "ENGRENAGE" AVEC CROIX ROUGE */
 .vs-close-btn {position: fixed; top: 3.5%;right: 29.1%;background: rgba(45, 36, 31, 0.8);border: 2px solid var(--vs-border); border-radius: 5px;
     box-shadow: 0 0 10px rgba(0,0,0,0.5);
-    color: #c94a4a; 
-    font-size: 1.8rem; 
+    color: #c94a4a;
+    font-size: 1.8rem;
     font-weight: bold;
-    line-height: 1; 
+    line-height: 1;
     width: 40px;
     height: 40px;
     padding: 0; /* Pas de padding interne, on centre avec flex */
@@ -100,7 +100,7 @@
         <div class="vs-modal-overlay" id="profileModal">
             <button class="vs-close-btn" id="closeSettingsBtn">×</button>
             <div class="vs-modal-content">
-                
+
 
                 <div class="vs-profile-banner">
                     <div class="vs-avatar">
@@ -113,7 +113,7 @@
                         <h1 class="vs-profile-name">Pseudo : {{ Auth::user()->name }}</h1>
                         <p class="vs-profile-email">Adresse email : {{ Auth::user()->email }}</p>
                         <p class="vs-profile-created_at">Crée le  : {{ Auth::user()->created_at->format('d/m/Y à H\hi') }}</p>
-                    
+
                     </div>
                 </div>
 
@@ -135,7 +135,7 @@
 
                 <div style="margin-top: 1rem; border-top: 2px dashed #5c4a3f; padding-top: 1.5rem;">
                     <h2 class="vs-title" style="font-size: 1.2rem; border-bottom: none; margin-bottom: 1rem;">Modifier votre profil</h2>
-                    
+
                     <form method="POST" action="{{ route('account.update') }}">
                         @csrf
                         @method('PUT')
@@ -172,7 +172,7 @@
                     <form method="POST" action="{{ route('account.destroy') }}"
                         onsubmit="return confirm('Êtes-vous certain de vouloir effacer ce Séraphin du monde ? Vos statistiques seront perdues à jamais.');">
                         @csrf
-                        @method('DELETE') 
+                        @method('DELETE')
                         <button type="submit" class="vs-button-logout" style="background: #5a1010; border-bottom-color: #2a0000;">
                            Supprimer le compte
                         </button>

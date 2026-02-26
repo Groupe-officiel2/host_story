@@ -15,7 +15,7 @@ class ServerController extends Controller
             new ServerDTO(2, "Survival", 2, 10),
             new ServerDTO(1, "Minecraft", 6, 20),
             new ServerDTO(2, "Arc", 3, 10),
-            new ServerDTO(1, "GAT", 30, 50),
+            new ServerDTO(1, "GTA", 30, 50),
         ];
 
         $exampleDTO = new CreateServerDTO("Test", 5);
