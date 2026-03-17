@@ -37,6 +37,9 @@ Route::get('/plans', [SubscriptionController::class, 'index'])->name('plans.inde
 
 // Routes protégées par auth
 Route::middleware('auth')->group(function () {
+    // Route du Webhook à faire
+
+    
     Route::get('/subscribe/{plan}',      [SubscriptionController::class, 'subscribe'])->name('subscribe');
     Route::get('/subscription/success',  [SubscriptionController::class, 'success'])->name('subscription.success');
     Route::get('/subscription/cancel',   [SubscriptionController::class, 'cancel'])->name('subscription.cancel');
