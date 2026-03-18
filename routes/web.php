@@ -4,7 +4,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\ServerController;
-use App\Http\Controllers\SubscriptionController;
+use App\Http\Controllers\paypalEvent\SubscriptionController;
+use App\Http\Controllers\paypalEvent\WebhookController;
 
 // --- (Authentification) ---
 Route::middleware('guest')->group(function () {
@@ -46,7 +47,7 @@ Route::middleware('auth')->group(function () {
 }); 
 
 // Webhook PayPal (pas de auth, mais exclu du CSRF)
-Route::post('/subscription/webhook', [SubscriptionController::class, 'webhook'])->name('subscription.webhook');
+Route::post('/subscription/webhook', [WebhookController::class, 'webhook'])->name('subscription.webhook');
 
 // Une redirection pour '/'
 Route::get('/', function () {

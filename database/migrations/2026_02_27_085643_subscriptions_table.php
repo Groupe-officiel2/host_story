@@ -13,7 +13,7 @@ return new class extends Migration
     {
     Schema::create('subscriptions', function (Blueprint $table) {
     $table->id();
-    $table->foreignId('user_id')->constrained();
+    $table->foreignUuid('user_id')->constrained();
     $table->foreignId('plan_id')->constrained();
     $table->string('paypal_subscription_id');
     $table->string('status');
