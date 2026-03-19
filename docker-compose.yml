@@ -41,8 +41,8 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: host_story_dev
-      MYSQL_USER: hoststory_user
-      MYSQL_PASSWORD: hoststory2026
+      MYSQL_USER: root
+      MYSQL_PASSWORD: root
     volumes:
       - mysql-data:/var/lib/mysql
     networks:

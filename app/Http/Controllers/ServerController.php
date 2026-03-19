@@ -10,15 +10,28 @@ class ServerController extends Controller
 {
     public function index()
     {
-        $servers = [
-            new ServerDTO(1, "Pokemon", 4, 5),
-            new ServerDTO(2, "Survival", 2, 10),
-            new ServerDTO(1, "Minecraft", 6, 20),
-            new ServerDTO(2, "Arc", 3, 10),
-            new ServerDTO(1, "GTA", 30, 50),
-        ];
+        $client = new \GuzzleHttp\Client([
+            'base_uri' => 'http://localhost:8080'
+        ]);
 
-        $exampleDTO = new CreateServerDTO("Test", 5);
+        $response = $client->request('GET', '/servers', [
+            'headers' => [
+                'Authorization' => 'Bearer TON_TOKEN'
+            ]
+        ]);
+
+        $data = json_decode($response->getBody(), true);
+
+        $servers = [];
+
+        foreach ($data as $s) {
+            $servers[] = new ServerDTO(
+                $s['ID'],
+                $s['Name'],
+                $s['Players'],
+                $s['Slots']
+            );
+        }
 
         return view('servers.index', compact('servers'));
     }
