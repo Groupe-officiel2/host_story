@@ -17,11 +17,13 @@ Route::middleware('guest')->group(function () {
 });
 
 // --- (Espace Membre) ---
-Route::middleware('auth')->group(function () {
+Route::middleware('auth', 'web')->group(function () {
     // Page d'accueil après connexion (Dashboard)
-    Route::get('/dashboard', [ServerController::class, 'index'])
-        ->name('dashboard');
+    Route::get('/dashboard', [ServerController::class, 'index'])->name('dashboard');
+    Route::get('/servers', [ServerController::class, 'index'])->name('servers.index');
 
+    // Toggle server
+    Route::post('/toggle-server', [ServerController::class, 'toggle'])->name('servers.toggle');
 
     // Déconnexion de l'utilisateur
     Route::post('/logout', [LoginController::class, 'logout'])->name('logout');

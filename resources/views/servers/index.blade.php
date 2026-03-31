@@ -16,10 +16,23 @@
                 @else
                     @foreach($servers as $server)
                         <div class="server-card">
-                            <p><strong>Nom :</strong> {{ $server->name }}</p>
+                            <form method="POST" action="/toggle-server" style="display:inline;">
+                                    @csrf
+                                    <input type="hidden" name="name" value="{{ $server->name }}">
+                                    <button class="start-btn">▶</button>
+                                </form>
+                            <p>
+                                <strong>Nom :</strong> {{ $server->name }}
+                            </p>
+                            
                             <p><strong>Joueurs :</strong> {{ $server->players }} / {{ $server->slots }}</p>
                             <p><strong>ID :</strong> {{ $server->id }}</p>
                             <button class="access-btn">Accéder</button>
+                            @if(session('status'))
+                                <div class="alert alert-success">
+                                    {{ session('status') }}
+                                </div>
+                            @endif
                         </div>
                     @endforeach
                 @endif
