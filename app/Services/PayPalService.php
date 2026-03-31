@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Cache;
 use App\Models\Subscription;
 use App\Models\Plan;
 use App\Models\User;
@@ -11,16 +12,18 @@ class PayPalService
 {
     public function getAccessToken()
     {
-        $response = Http::asForm()
-            ->withBasicAuth(
-                config('services.paypal.client_id'),
-                config('services.paypal.secret')
-            )
-            ->post(config('services.paypal.base_url') . '/v1/oauth2/token', [
-                'grant_type' => 'client_credentials'
-            ]);
-
-        return $response['access_token'];
+        return Cache::remember('paypal_access_token', 60 * 60 * 8, function () {
+            $response = Http::asForm()
+                ->withBasicAuth(
+                    config('services.paypal.client_id'),
+                    config('services.paypal.secret')
+                )
+                ->post(config('services.paypal.base_url') . '/v1/oauth2/token', [
+                    'grant_type' => 'client_credentials'
+                ]);
+            // dd($response->json());
+            return $response['access_token'];
+        });
     }
 
     public function createSubscription($planId)
@@ -40,12 +43,12 @@ class PayPalService
     }
 
     public function getSubscription($subscriptionId)
-{
-    $token = $this->getAccessToken();
+    {
+        $token = $this->getAccessToken();
 
-    $response = Http::withToken($token)
-        ->get(config('services.paypal.base_url') . '/v1/billing/subscriptions/' . $subscriptionId);
+        $response = Http::withToken($token)
+            ->get(config('services.paypal.base_url') . '/v1/billing/subscriptions/' . $subscriptionId);
 
-    return $response->json();
-}
+        return $response->json();
+    }
 }

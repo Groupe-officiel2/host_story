@@ -7,7 +7,6 @@
     <title>Host Story</title>
     <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        /* --- TOUT TON CSS VINTAGE STORY EST ICI --- */
         :root {
             --vs-bg-dark: #1a1614;
             --vs-panel: #2d241f;
@@ -27,11 +26,10 @@
             overflow-x: hidden;
         }
 
-        /* Conteneurs de pages */
+        /* Page containers */
         .vs-wrapper { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px; }
         .vs-container { width: 100%; max-width: 500px; background: var(--vs-panel); border: 4px solid var(--vs-border); padding: 2rem; box-shadow: 0 0 30px rgba(0, 0, 0, 0.8); text-align: center; }
 
-        /* Typographie et Boutons */
         .vs-title { text-align: center; text-transform: uppercase; letter-spacing: 3px; border-bottom: 2px solid var(--vs-border); margin-bottom: 0.5rem; padding-bottom: 0.5rem; }
         .vs-group { margin-bottom: 1.2rem; text-align: left; }
         .vs-label { display: block; text-transform: uppercase; font-size: 0.8rem; color: var(--vs-text-muted); margin-bottom: 0.3rem; }
@@ -41,18 +39,17 @@
         .vs-button-logout:hover { background: #4a3831; color: var(--vs-text-parchment); }
         .vs-button-logout:active { border-bottom-width: 0; transform: translateY(4px); }
 
-        /* Engrenage */
+        /* Gear */
         .vs-gear-btn { position: fixed; top: 25px; right: 30px; background: rgba(45, 36, 31, 0.8); border: 2px solid var(--vs-border); border-radius: 5px; padding: 8px; cursor: pointer; z-index: 9999; box-shadow: 0 0 10px rgba(0,0,0,0.5); transition: all 0.3s ease; pointer-events: auto;}
         .vs-gear-btn svg { width: 35px; height: 35px; fill: var(--vs-accent); transition: transform 0.5s ease, fill 0.3s; display: block; }
         .vs-gear-btn:hover { background: var(--vs-panel); border-color: var(--vs-accent); }
         .vs-gear-btn:hover svg { transform: rotate(90deg); fill: var(--vs-text-parchment); }
 
-        /* Modale et flou */
+        /* Modals*/
         .vs-modal-overlay { display: flex; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(20, 16, 14, 0.6); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); z-index: 100; align-items: center; justify-content: center; padding: 20px; box-sizing: border-box; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; }
         .vs-modal-overlay.active { opacity: 1; pointer-events: auto; }
         .vs-modal-content { background: var(--vs-panel); border: 4px solid var(--vs-border); padding: 2rem; width: 100%; max-width: 500px; max-height: 90vh; overflow-y: auto; position: relative; box-shadow: 0 0 50px rgba(0,0,0,0.9); transform: translateY(-20px) scale(0.95); transition: transform 0.3s ease; }
         .vs-modal-overlay.active .vs-modal-content { transform: translateY(0) scale(1); }
-/* NOUVEAU STYLE : BOUTON CARRÉ STYLE "ENGRENAGE" AVEC CROIX ROUGE */
 .vs-close-btn {position: fixed; top: 3.5%;right: 29.1%;background: rgba(45, 36, 31, 0.8);border: 2px solid var(--vs-border); border-radius: 5px;
     box-shadow: 0 0 10px rgba(0,0,0,0.5);
     color: #c94a4a;
@@ -61,7 +58,7 @@
     line-height: 1;
     width: 40px;
     height: 40px;
-    padding: 0; /* Pas de padding interne, on centre avec flex */
+    padding: 0; 
     display: flex;
     align-items: center;
     justify-content: center;
@@ -73,11 +70,11 @@
 .vs-close-btn:hover {
     background: var(--vs-panel);
     border-color: var(--vs-accent);
-    color: #ff6b6b; /* Un rouge un peu plus vif pour le feedback */
-    transform: scale(1.05); /* Petit effet de "pop" */
+    color: #ff6b6b; 
+    transform: scale(1.05);
 }
 
-        /* Profil interne */
+        /* Profil */
         .vs-profile-banner { display: flex; align-items: center; gap: 20px; background: var(--vs-input-bg); border: 2px solid var(--vs-border); padding: 15px; margin-bottom: 2rem; box-shadow: inset 0 0 15px rgba(0,0,0,0.6); text-align: left; }
         .vs-avatar { width: 60px; height: 60px; background: var(--vs-panel); border: 2px solid var(--vs-accent); border-radius: 5px; display: flex; justify-content: center; align-items: center; box-shadow: 0 0 10px rgba(0,0,0,0.5); }
         .vs-avatar svg { width: 40px; height: 40px; fill: var(--vs-text-parchment); }

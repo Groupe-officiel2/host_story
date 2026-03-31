@@ -4,8 +4,6 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\ServerController;
-use App\Http\Controllers\paypalEvent\SubscriptionController;
-use App\Http\Controllers\paypalEvent\WebhookController;
 
 // --- (Authentification) ---
 Route::middleware('guest')->group(function () {
@@ -33,21 +31,6 @@ Route::middleware('auth')->group(function () {
     // Suppression de compte
     Route::delete('/account/destroy', [LoginController::class, 'destroy'])->name('account.destroy');
 });
-// --- (Abonnements) ---
-Route::get('/plans', [SubscriptionController::class, 'index'])->name('plans.index');
-
-// Routes protégées par auth
-Route::middleware('auth')->group(function () {
-    // Route du Webhook à faire
-
-    
-    Route::get('/subscribe/{plan}',      [SubscriptionController::class, 'subscribe'])->name('subscribe');
-    Route::get('/subscription/success',  [SubscriptionController::class, 'success'])->name('subscription.success');
-    Route::get('/subscription/cancel',   [SubscriptionController::class, 'cancel'])->name('subscription.cancel');
-}); 
-
-// Webhook PayPal (pas de auth, mais exclu du CSRF)
-Route::post('/subscription/webhook', [WebhookController::class, 'webhook'])->name('subscription.webhook');
 
 // Une redirection pour '/'
 Route::get('/', function () {

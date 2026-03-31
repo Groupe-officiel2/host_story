@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 
 class WebhookController extends Controller
 {
-    // PayPal envoie les événements webhook ici
+    // PayPal sends webhook events
     public function webhook(Request $request)
     {
         $event = $request->all();
@@ -26,21 +26,21 @@ class WebhookController extends Controller
     }
 
     private function handleActivated(array $event)
-    {
+    {   // subscription activation
         $subscriptionId = $event['resource']['id'];
         Subscription::where('paypal_subscription_id', $subscriptionId)
             ->update(['status' => 'ACTIVE']);
     }
 
     private function handleCancelled(array $event)
-    {
+    {   // subscription cancellation
         $subscriptionId = $event['resource']['id'];
         Subscription::where('paypal_subscription_id', $subscriptionId)
             ->update(['status' => 'CANCELLED']);
     }
 
     private function handleSuspended(array $event)
-    {
+    {   // subscription suspension
         $subscriptionId = $event['resource']['id'];
         Subscription::where('paypal_subscription_id', $subscriptionId)
             ->update(['status' => 'SUSPENDED']);
@@ -48,6 +48,12 @@ class WebhookController extends Controller
 
     private function handlePaymentCompleted(array $event)
     {
-        // Log ou mise a jour de la date de renouvellement si besoin
+        // payment successful, update next billing date
+        $subscriptionId = $event['resource']['billing_agreement_id'] ?? null;
+
+        if ($subscriptionId) {
+            Subscription::where('paypal_subscription_id', $subscriptionId)
+                ->update(['renewed_at' => now()]);
+        }
     }
 }
