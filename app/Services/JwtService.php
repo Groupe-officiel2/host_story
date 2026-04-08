@@ -8,7 +8,7 @@ use Firebase\JWT\Key;
 
 class JwtService
 {
-    private static string $secret = 'secret';
+    private static string $secret = 'your_very_long_secret_key_123456789';
 
     public static function generateToken($userId, $role = 'user')
     {

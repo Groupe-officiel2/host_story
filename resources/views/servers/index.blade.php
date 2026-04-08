@@ -10,20 +10,8 @@
         <div class="servers-list">
             <h1 class="page-title">Mes serveurs</h1>
 
-            <div class="servers-scroll">
-                @if(count($servers) === 0)
-                    <h2>Aucun serveur pour le moment</h2>
-                @else
-                    @foreach($servers as $server)
-                        <div class="server-card">
-                            <p><strong>Nom :</strong> {{ $server->name }}</p>
-                            <p><strong>Joueurs :</strong> {{ $server->players }} / {{ $server->slots }}</p>
-                            <p><strong>ID :</strong> {{ $server->id }}</p>
-                            <button class="access-btn">Accéder</button>
-                        </div>
-                    @endforeach
-                @endif
-            </div>
+            <!-- Conteneur rempli dynamiquement par JS -->
+            <div class="servers-scroll"></div>
         </div>
 
         <!-- ========================== -->
@@ -46,7 +34,10 @@
             <span class="close">&times;</span>
             <h2>Louer un serveur</h2>
 
-            <form>
+            <!-- FORMULAIRE CONNECTÉ AU BACKEND -->
+            <form method="POST" action="/servers/create">
+                @csrf
+
                 <label for="name">Nom du serveur</label><br>
                 <input type="text" id="name" name="name" required><br><br>
 
@@ -60,6 +51,9 @@
         </div>
     </div>
 
+    <!-- ========================== -->
+    <!-- SCRIPT MODAL + PRIX -->
+    <!-- ========================== -->
     <script>
         document.addEventListener('DOMContentLoaded', function () {
 
@@ -100,6 +94,48 @@
             }
 
         });
+    </script>
+
+    <!-- ========================== -->
+    <!-- SCRIPT CHARGEMENT SERVEURS -->
+    <!-- ========================== -->
+    <script>
+        function refreshServers() {
+            fetch('/servers-data')
+                .then(res => res.json())
+                .then(data => {
+                    const container = document.querySelector('.servers-scroll');
+
+                    if (!container) return;
+
+                    container.innerHTML = '';
+
+                    if (!Array.isArray(data) || data.length === 0) {
+                        container.innerHTML = '<h2>Aucun serveur pour le moment</h2>';
+                        return;
+                    }
+
+                    data.forEach(server => {
+                        container.innerHTML += `
+                            <div class="server-card">
+                                <p><strong>Nom :</strong> ${server.name}</p>
+                                <p><strong>Joueurs :</strong> 0 / ${server.slots}</p>
+                                <p><strong>ID :</strong> ${server.id}</p>
+                                <button class="access-btn">Accéder</button>
+                            </div>
+                        `;
+                    });
+                })
+                .catch(err => {
+                    console.error('Refresh error:', err);
+                });
+        }
+
+        // Auto refresh toutes les 5 secondes
+        setInterval(refreshServers, 5000);
+
+        // Chargement initial
+        refreshServers();
     </script>
 
 </x-profile-layout>

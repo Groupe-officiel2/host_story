@@ -37,4 +37,8 @@ Route::get('/', function () {
     return redirect()->route('register');
 });
 
+Route::get('/servers-data', [ServerController::class, 'data']);
 
+Route::post('/api/servers', [ServerController::class, 'storeFromGo']);
+
+Route::post('/servers/create', [ServerController::class, 'create']);
