@@ -10,15 +10,6 @@ class ServerController extends Controller
 {
     public function index()
     {
-        $hasSubscription = auth()->user()
-            ->subscriptions()
-            ->where('status', 'active')
-            ->exists();
-
-        if (!$hasSubscription) {
-            return redirect()->route('plans.index')
-                ->with('error', 'Vous devez avoir un abonnement actif pour accéder aux serveurs.');
-        }
 
         $servers = [
             new ServerDTO(1, "Pokemon", 4, 5),
