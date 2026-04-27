@@ -21,6 +21,10 @@ Route::middleware('auth')->group(function () {
     // Page d'accueil après connexion (Dashboard)
     Route::get('/dashboard', [ServerController::class, 'index'])
         ->name('dashboard');
+    
+    // Création d'un serveur
+    Route::post('/servers', [ServerController::class, 'store'])
+        ->name('servers.store');
 
 
     // Déconnexion de l'utilisateur
