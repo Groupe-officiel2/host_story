@@ -21,6 +21,7 @@ Route::middleware('auth', 'web')->group(function () {
     // Page d'accueil après connexion (Dashboard)
     Route::get('/dashboard', [ServerController::class, 'index'])->name('dashboard');
     Route::get('/servers', [ServerController::class, 'index'])->name('servers.index');
+    Route::post('/server-status', [ServerController::class, 'status']);
 
     // Toggle server
     Route::post('/toggle-server', [ServerController::class, 'toggle'])->name('servers.toggle');

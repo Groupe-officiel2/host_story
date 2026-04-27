@@ -11,15 +11,7 @@ class ServerController extends Controller
 {
     public function index()
     {
-        $hasSubscription = auth()->user()
-            ->subscriptions()
-            ->where('status', 'active')
-            ->exists();
-
-        if (!$hasSubscription) {
-            return redirect()->route('plans.index')
-                ->with('error', 'Vous devez avoir un abonnement actif pour accéder aux serveurs.');
-        }
+        
 
         $servers = [
             new ServerDTO(1, "Pokemon", 4, 5),
@@ -52,6 +44,19 @@ class ServerController extends Controller
             'Authorization' => 'Bearer ' . $token,
         ])->post("http://192.168.149.144:8082/toggle?name={$name}");
 
-        return back()->with('status', $response->body());
+        return response($response->body());
     }
+
+    public function status(Request $request)
+    {
+        $name = $request->input('name');
+        $token = session('token');
+
+        $response = Http::withHeaders([
+            'Authorization' => 'Bearer ' . $token,
+        ])->get("http://192.168.149.144:8082/status?name={$name}");
+
+        return $response->body(); // "running" ou "stopped"
+    }
+
 }

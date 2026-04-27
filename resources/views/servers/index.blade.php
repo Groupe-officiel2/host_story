@@ -16,11 +16,61 @@
                 @else
                     @foreach($servers as $server)
                         <div class="server-card">
-                            <form method="POST" action="/toggle-server" style="display:inline;">
-                                    @csrf
-                                    <input type="hidden" name="name" value="{{ $server->name }}">
-                                    <button class="start-btn">▶</button>
-                                </form>
+
+                                <input type="hidden" name="name" value="{{ $server->name }}">
+                                <button class="start-btn" data-name="{{ $server->name }}">⏳</button>
+<script>
+async function updateServerStatus(btn) {
+    const name = btn.dataset.name;
+
+    const response = await fetch('/server-status', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+        },
+        body: JSON.stringify({ name })
+    });
+
+    const status = await response.text();
+
+    if (status.includes("running")) {
+        btn.textContent = "■";
+        btn.style.color = "red";
+    } else {
+        btn.textContent = "▶";
+        btn.style.color = "green";
+    }
+}
+
+document.querySelectorAll('.start-btn').forEach(btn => {
+    updateServerStatus(btn); // 🔥 mise à jour au chargement
+
+    btn.addEventListener('click', async () => {
+        btn.textContent = "⏳";
+
+        const response = await fetch('/toggle-server', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+            },
+            body: JSON.stringify({ name: btn.dataset.name })
+        });
+
+        const result = await response.text();
+
+        if (result.includes("started")) {
+            btn.textContent = "■";
+            btn.style.color = "red";
+        } else if (result.includes("stopped")) {
+            btn.textContent = "▶";
+            btn.style.color = "green";
+        }
+    });
+});
+</script>
+
                             <p>
                                 <strong>Nom :</strong> {{ $server->name }}
                             </p>
