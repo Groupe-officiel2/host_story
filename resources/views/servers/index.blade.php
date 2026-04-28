@@ -119,7 +119,7 @@
                         container.innerHTML += `
                             <div class="server-card">
                                 <p><strong>Nom :</strong> ${server.name}</p>
-                                <p><strong>Joueurs :</strong> 0 / ${server.slots}</p>
+                                <p><strong>Joueurs :</strong> ${server.players} / ${server.slots}</p>
                                 <p><strong>ID :</strong> ${server.id}</p>
                                 <button class="access-btn">Accéder</button>
                             </div>

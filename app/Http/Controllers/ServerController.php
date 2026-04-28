@@ -14,7 +14,7 @@ class ServerController extends Controller
     public function index()
     {
         $client = new Client([
-            'base_uri' => 'http://172.26.162.80:8082',
+            'base_uri' => 'http://host.docker.internal:8082',
             'timeout'  => 5.0,
         ]);
 
@@ -24,14 +24,15 @@ class ServerController extends Controller
                     'Authorization' => 'Bearer ' . \App\Services\JwtService::generateToken(auth()->id())
                 ]
             ]);
+            $body = (string) $response->getBody();
+            $data = json_decode($body, true);
         } catch (\Exception $e) {
-            dd('API ERROR: ' . $e->getMessage());
+            // Si l'API Go n'est pas allumé, on ne crash plus la page.
+            $data = [];
         }
 
-        $data = json_decode($response->getBody(), true);
-
         if (!is_array($data)) {
-            abort(500, 'Réponse API invalide');
+            $data = [];
         }
 
         $servers = [];
