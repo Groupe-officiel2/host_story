@@ -31,6 +31,11 @@ class RegisterController extends Controller
             'password' => Hash::make($request->password),
         ]);
 
+        $clientRole = \App\Models\Role::where('name', 'client')->first();
+        if ($clientRole) {
+            $user->roles()->attach($clientRole->id);
+        }
+
         Auth::login($user);
 
         return redirect()->route('dashboard')   
