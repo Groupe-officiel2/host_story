@@ -4,10 +4,12 @@ namespace App\Http\Controllers;
 
 use App\DTO\ServerDTO;
 use App\DTO\CreateServerDTO;
+use App\Services\GoApiService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use GuzzleHttp\Client;
 use App\Models\Server;
+use Illuminate\Support\Facades\Auth;
 
 class ServerController extends Controller
 {
@@ -106,35 +108,26 @@ class ServerController extends Controller
         ]);
     }
 
-    public function create(Request $request)
+    public function store(Request $request, GoApiService $goApiService)
     {
         $request->validate([
-            'name' => 'required|string',
-            'slots' => 'required|integer|min:1'
+            'name' => 'required|string|max:255',
+            'slots' => 'required|integer|min:1|max:50',
         ]);
 
-        $response = Http::post('http://host.docker.internal:8082/create-server', [
-            'name' => $request->name,
-            'slots' => $request->slots,
-        ]);
+        $dto = new CreateServerDTO(
+            $request->input('name'),
+            $request->input('slots'),
+            'server-vintagestory:latest'
+        );
 
-        if (!$response->successful()) {
-            return back()->withErrors('Erreur création serveur Go');
-        }
+        // Utilisateur connecté, ou 'test_user' par défaut
+        $userId = Auth::check() ? (string) Auth::id() : 'test_user';
 
-        $data = $response->json();
+        // Appel à l'API Go
+        $response = $goApiService->createServer($dto, $userId);
 
-        $server = Server::create([
-            'name' => $data['name'],
-            'slots' => $data['slots'],
-            'port' => $data['port'] ?? null,
-            'container_id' => $data['container_id'] ?? null,
-        ]);
-
-        $server->users()->attach(auth()->id(), [
-            'role' => 'owner'
-        ]);
-
-        return redirect()->back();
+        return redirect()->route('dashboard')->with('server_success', 'Serveur en cours de création !');
+    }
     }
 }

@@ -21,6 +21,10 @@ Route::middleware('auth')->group(function () {
     // Page d'accueil après connexion (Dashboard)
     Route::get('/dashboard', [ServerController::class, 'index'])
         ->name('dashboard');
+    
+    // Création d'un serveur
+    Route::post('/servers', [ServerController::class, 'store'])
+        ->name('servers.store');
 
 
     // Déconnexion de l'utilisateur
@@ -36,9 +40,6 @@ Route::middleware('auth')->group(function () {
 Route::get('/', function () {
     return redirect()->route('register');
 });
-
 Route::get('/servers-data', [ServerController::class, 'data']);
 
 Route::post('/api/servers', [ServerController::class, 'storeFromGo']);
-
-Route::post('/servers/create', [ServerController::class, 'create']);

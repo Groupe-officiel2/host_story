@@ -10,6 +10,12 @@
         <div class="servers-list">
             <h1 class="page-title">Mes serveurs</h1>
 
+            @if(session('server_success'))
+                <div style="background-color: #d4edda; color: #155724; padding: 10px; border-radius: 5px; margin-bottom: 15px;">
+                    {{ session('server_success') }}
+                </div>
+            @endif
+            
             <!-- Conteneur rempli dynamiquement par JS -->
             <div class="servers-scroll"></div>
         </div>
@@ -35,9 +41,8 @@
             <h2>Louer un serveur</h2>
 
             <!-- FORMULAIRE CONNECTÉ AU BACKEND -->
-            <form method="POST" action="/servers/create">
+            <form method="POST" action="{{ route('servers.store') }}">
                 @csrf
-
                 <label for="name">Nom du serveur</label><br>
                 <input type="text" id="name" name="name" required><br><br>
 
