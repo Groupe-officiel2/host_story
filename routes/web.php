@@ -34,12 +34,13 @@ Route::middleware('auth')->group(function () {
 
     // Suppression de compte
     Route::delete('/account/destroy', [LoginController::class, 'destroy'])->name('account.destroy');
+
+    Route::get('/servers-data', [ServerController::class, 'data']);
 });
 
 // Une redirection pour '/'
 Route::get('/', function () {
     return redirect()->route('register');
 });
-Route::get('/servers-data', [ServerController::class, 'data']);
 
 Route::post('/api/servers', [ServerController::class, 'storeFromGo']);

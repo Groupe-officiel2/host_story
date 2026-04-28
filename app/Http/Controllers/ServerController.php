@@ -15,9 +15,10 @@ class ServerController extends Controller
 {
     public function index()
     {
+        $liveData = [];
         $client = new Client([
             'base_uri' => 'http://host.docker.internal:8082',
-            'timeout'  => 5.0,
+            'timeout' => 5.0,
         ]);
 
         try {
@@ -26,25 +27,35 @@ class ServerController extends Controller
                     'Authorization' => 'Bearer ' . \App\Services\JwtService::generateToken(auth()->id())
                 ]
             ]);
-            $body = (string) $response->getBody();
-            $data = json_decode($body, true);
+            $body = json_decode((string) $response->getBody(), true);
+            if (is_array($body)) {
+                $liveData = collect($body)->keyBy('Name')->toArray();
+                // Import des serveurs Docker vers la BDD Laravel si pas existants
+                foreach ($liveData as $live) {
+                    \App\Models\Server::firstOrCreate(
+                        ['name' => $live['Name']],
+                        [
+                            'id' => \Illuminate\Support\Str::uuid()->toString(),
+                            'slots' => $live['Slots'] ?? 10
+                        ]
+                    );
+                }
+            }
         } catch (\Exception $e) {
-            // Si l'API Go n'est pas allumé, on ne crash plus la page.
-            $data = [];
+            // Ignore si API hors ligne
         }
 
-        if (!is_array($data)) {
-            $data = [];
-        }
-
+        $dbServers = \App\Models\Server::all();
         $servers = [];
-
-        foreach ($data as $s) {
+        foreach ($dbServers as $s) {
+            $live = $liveData[$s->name] ?? null;
             $servers[] = new ServerDTO(
-                $s['ID'] ?? null,
-                $s['Name'] ?? null,
-                $s['Players'] ?? 0,
-                $s['Slots'] ?? 0
+                $s->id,
+                $s->name,
+                $live ? ($live['Players'] ?? 0) : 0,
+                $s->slots,
+                $live ? ($live['Port'] ?? null) : null,
+                $live ? 'online' : 'offline'
             );
         }
 
@@ -53,46 +64,53 @@ class ServerController extends Controller
 
     public function data()
     {
+        $liveData = [];
         $client = new Client([
             'base_uri' => 'http://host.docker.internal:8082',
-            'timeout'  => 5.0,
+            'timeout' => 5.0,
         ]);
 
         try {
             $response = $client->get('/servers', [
                 'headers' => [
-                    'Authorization' => 'Bearer ' . session('jwt_token')
+                    'Authorization' => 'Bearer ' . \App\Services\JwtService::generateToken(auth()->id())
                 ]
             ]);
+            $body = json_decode((string) $response->getBody(), true);
+            if (is_array($body)) {
+                $liveData = collect($body)->keyBy('Name')->toArray();
+                // Import
+                foreach ($liveData as $live) {
+                    \App\Models\Server::firstOrCreate(
+                        ['name' => $live['Name']],
+                        [
+                            'id' => \Illuminate\Support\Str::uuid()->toString(),
+                            'slots' => $live['Slots'] ?? 10
+                        ]
+                    );
+                }
+            }
         } catch (\Exception $e) {
-            return response()->json([
-                'error' => 'API unreachable',
-                'message' => $e->getMessage()
-            ], 500);
+            // Ignore
         }
 
-        $body = (string) $response->getBody();
-        $data = json_decode($body, true);
-
-        if (!is_array($data)) {
-            return response()->json([
-                'error' => 'Invalid API response',
-                'raw' => $body
-            ], 500);
-        }
-
-        return response()->json(array_map(function ($s) {
+        $dbServers = \App\Models\Server::all();
+        return response()->json($dbServers->map(function ($s) use ($liveData) {
+            $live = $liveData[$s->name] ?? null;
             return [
-                'id' => $s['ID'] ?? null,
-                'name' => $s['Name'] ?? null,
-                'players' => $s['Players'] ?? 0,
-                'slots' => $s['Slots'] ?? 0,
+                'id' => $s->id,
+                'name' => $s->name,
+                'players' => $live ? ($live['Players'] ?? 0) : 0,
+                'slots' => $s->slots,
+                'port' => $live ? ($live['Port'] ?? null) : null,
+                'status' => $live ? 'online' : 'offline'
             ];
-        }, $data));    }
+        }));
+    }
 
     public function storeFromGo(Request $request)
     {
-        if ($request->header('X-API-KEY') !== 'your_very_long_secret_key_123456789') {
+        if ($request->header('X-API-KEY') !== 'SECRET123' && $request->header('X-API-KEY') !== 'your_very_long_secret_key_123456789') {
             return response()->json(['error' => 'Unauthorized'], 403);
         }
 
@@ -128,6 +146,5 @@ class ServerController extends Controller
         $response = $goApiService->createServer($dto, $userId);
 
         return redirect()->route('dashboard')->with('server_success', 'Serveur en cours de création !');
-    }
     }
 }

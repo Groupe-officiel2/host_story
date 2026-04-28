@@ -121,11 +121,15 @@
                     }
 
                     data.forEach(server => {
+                        let portHtml = server.status === 'online' && server.port 
+                            ? `<p style="color:green"><strong>En ligne</strong> - Port: ${server.port}</p>` 
+                            : `<p style="color:red"><strong>Hors ligne</strong></p>`;
+                            
                         container.innerHTML += `
                             <div class="server-card">
                                 <p><strong>Nom :</strong> ${server.name}</p>
                                 <p><strong>Joueurs :</strong> ${server.players} / ${server.slots}</p>
-                                <p><strong>ID :</strong> ${server.id}</p>
+                                ${portHtml}
                                 <button class="access-btn">Accéder</button>
                             </div>
                         `;
