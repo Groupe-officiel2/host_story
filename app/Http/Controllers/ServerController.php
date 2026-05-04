@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\Http;
 use GuzzleHttp\Client;
 use App\Models\Server;
 use Illuminate\Support\Facades\Auth;
+use App\Services\PayPalService;
+use App\Models\Subscription;
 
 class ServerController extends Controller
 {
@@ -17,7 +19,7 @@ class ServerController extends Controller
     {
         $liveData = [];
         $client = new Client([
-            'base_uri' => 'http://host.docker.internal:8082',
+            'base_uri' => 'http://hoststory-api:8081',
             'timeout' => 5.0,
         ]);
 
@@ -66,7 +68,7 @@ class ServerController extends Controller
     {
         $liveData = [];
         $client = new Client([
-            'base_uri' => 'http://host.docker.internal:8082',
+            'base_uri' => 'http://hoststory-api:8081',
             'timeout' => 5.0,
         ]);
 
@@ -126,12 +128,31 @@ class ServerController extends Controller
         ]);
     }
 
-    public function store(Request $request, GoApiService $goApiService)
+    public function store(Request $request, GoApiService $goApiService, PayPalService $paypalService)
     {
         $request->validate([
-            'name' => 'required|string|max:255',
+            'name'  => 'required|string|max:255',
             'slots' => 'required|integer|min:1|max:50',
         ]);
+
+        $userId = Auth::check() ? (string) Auth::id() : null;
+
+        $subscription = Subscription::where('user_id', $userId)
+            ->where('status', 'ACTIVE')
+            ->first();
+
+        if (!$subscription) {
+            return redirect()->route('plans.index')
+                ->with('error', 'Vous devez avoir un abonnement actif pour créer un serveur.');
+        }
+
+        $paypalData = $paypalService->getSubscription($subscription->paypal_subscription_id);
+
+        if (($paypalData['status'] ?? '') !== 'ACTIVE') {
+            $subscription->update(['status' => $paypalData['status'] ?? 'CANCELLED']);
+            return redirect()->route('plans.index')
+                ->with('error', 'Votre abonnement PayPal est expiré ou annulé.');
+        }
 
         $dto = new CreateServerDTO(
             $request->input('name'),
@@ -139,12 +160,9 @@ class ServerController extends Controller
             'server-vintagestory:latest'
         );
 
-        // Utilisateur connecté, ou 'test_user' par défaut
-        $userId = Auth::check() ? (string) Auth::id() : 'test_user';
+        $goApiService->createServer($dto, $userId);
 
-        // Appel à l'API Go
-        $response = $goApiService->createServer($dto, $userId);
-
-        return redirect()->route('dashboard')->with('server_success', 'Serveur en cours de création !');
+        return redirect()->route('dashboard')
+            ->with('server_success', 'Serveur en cours de création !');
     }
 }

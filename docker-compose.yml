@@ -14,7 +14,16 @@ services:
       - "host.docker.internal:host-gateway"
     networks:
       - hoststory
-
+  api-go:
+    build:
+      context: ../host_story_api
+    container_name: hoststory-api
+    ports:
+      - "8081:8081"
+    depends_on:
+      - db
+    networks:
+      - hoststory
   vite:
     image: node:20-alpine
     working_dir: /var/www
@@ -23,7 +32,8 @@ services:
     command: sh -c "[ ! -d 'node_modules' ] && npm install; npm run dev"
     ports:
       - "5173:5173"
-
+    networks:
+      - hoststory
   nginx:
     image: nginx:alpine
     container_name: hoststory-nginx
@@ -36,20 +46,18 @@ services:
       - app
     networks:
       - hoststory
-
   db:
     image: mysql:8.0
     container_name: hoststory-mysql
     environment:
       MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: host_story_dev
+      MYSQL_DATABASE: hoststory_dev
       MYSQL_USER: root
       MYSQL_PASSWORD: root
     volumes:
       - mysql-data:/var/lib/mysql
     networks:
       - hoststory
-
   mailpit:
     image: axllent/mailpit:latest
     container_name: hoststory-mailpit
@@ -58,7 +66,6 @@ services:
       - "1025:1025"
     networks:
       - hoststory
-
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
     container_name: hoststory-phpmyadmin
@@ -72,7 +79,6 @@ services:
       - db
     networks:
       - hoststory
-
 volumes:
   mysql-data:
 
