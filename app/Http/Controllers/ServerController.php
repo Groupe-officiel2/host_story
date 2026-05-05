@@ -19,7 +19,7 @@ class ServerController extends Controller
     {
         $liveData = [];
         $client = new Client([
-            'base_uri' => 'http://hoststory-api:8081',
+            'base_uri' => 'http://hoststory-api:8082',
             'timeout' => 5.0,
         ]);
 
@@ -57,7 +57,7 @@ class ServerController extends Controller
                 $live ? ($live['Players'] ?? 0) : 0,
                 $s->slots,
                 $live ? ($live['Port'] ?? null) : null,
-                $live ? 'online' : 'offline'
+                ($live && isset($live['State']) && $live['State'] === 'running') ? 'online' : 'offline'
             );
         }
 
@@ -68,7 +68,7 @@ class ServerController extends Controller
     {
         $liveData = [];
         $client = new Client([
-            'base_uri' => 'http://hoststory-api:8081',
+            'base_uri' => 'http://hoststory-api:8082',
             'timeout' => 5.0,
         ]);
 
@@ -105,7 +105,7 @@ class ServerController extends Controller
                 'players' => $live ? ($live['Players'] ?? 0) : 0,
                 'slots' => $s->slots,
                 'port' => $live ? ($live['Port'] ?? null) : null,
-                'status' => $live ? 'online' : 'offline'
+                'status' => ($live && isset($live['State']) && $live['State'] === 'running') ? 'online' : 'offline'
             ];
         }));
     }

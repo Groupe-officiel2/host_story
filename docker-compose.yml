@@ -19,7 +19,16 @@ services:
       context: ../host_story_api
     container_name: hoststory-api
     ports:
-      - "8081:8081"
+      - "8081:8082"
+    environment:
+      - DB_HOST=db
+      - DB_PORT=3306
+      - DB_NAME=hoststory_dev
+      - DB_USER=root
+      - DB_PASSWORD=root
+      - JWT_SECRET=your_very_long_secret_key_123456789
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
     depends_on:
       - db
     networks:
@@ -81,7 +90,6 @@ services:
       - hoststory
 volumes:
   mysql-data:
-
 networks:
   hoststory:
     driver: bridge

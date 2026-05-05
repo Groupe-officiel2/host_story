@@ -16,7 +16,7 @@ class GoApiService
         // Le secret est récupéré depuis la variable d'environnement JWT_SECRET (ou 'secret' par défaut)
         $this->secretKey = env('JWT_SECRET', 'secret');
         // L'URL de l'API Go
-        $this->apiUrl = env('GO_API_URL', 'http://host.docker.internal:8082');
+        $this->apiUrl = env('GO_API_URL', 'http://hoststory-api:8082');
     }
 
     /**
