@@ -17,6 +17,7 @@ services:
   api-go:
     build:
       context: ../host_story_api
+      dockerfile: build/docker/Dockerfile
     container_name: hoststory-api
     ports:
       - "8081:8082"
