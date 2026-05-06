@@ -28,6 +28,7 @@ services:
       - DB_USER=root
       - DB_PASSWORD=root
       - JWT_SECRET=your_very_long_secret_key_123456789
+      - TOKEN=your_very_long_secret_key_123456789
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     depends_on:
