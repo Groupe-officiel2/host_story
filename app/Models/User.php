@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use App\Models\Server;
 
 class User extends Authenticatable
 {
@@ -50,6 +51,13 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+    public function servers()
+    {
+        return $this->belongsToMany(Server::class, 'server_user')
+            ->withPivot('role')
+            ->withTimestamps();
+    }
+
     public function subscriptions()
     {
         return $this->hasMany(\App\Models\Subscription::class);
