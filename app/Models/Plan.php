@@ -8,8 +8,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class Plan extends Model
 {
     protected $fillable = [
-        'name',
-        'slots',
+        'id',
         'price',
         'interval',
         'paypal_plan_id'

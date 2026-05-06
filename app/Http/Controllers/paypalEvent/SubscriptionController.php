@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\paypalEvent;
 
 use App\Http\Controllers\Controller;
-use App\Models\Plan;
 use App\Models\Subscription;
+use App\Models\Plan;
 use App\Services\PayPalService;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
@@ -14,7 +14,7 @@ class SubscriptionController extends Controller
 public function index()
 {
     $plans = Plan::all();
-    return view('plans.index', compact('plans'));
+    return view('servers.index', compact('plans'));
 }
     public function subscribe(Plan $plan, PayPalService $paypal)
     {
@@ -49,6 +49,6 @@ public function index()
     // PayPal redirects here if the user cancels
     public function cancel()
     {
-        return redirect('/plans')->with('error', 'Abonnement annulé.');
+        return redirect('/dashboard')->with('error', 'Abonnement annulé.');
     }
 }
