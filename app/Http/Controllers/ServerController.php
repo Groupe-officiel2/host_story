@@ -45,6 +45,7 @@ class ServerController extends Controller
             }
         } catch (\Exception $e) {
             // Ignore si API hors ligne
+            \Log::error("Erreur API Go : " . $e->getMessage());
         }
 
         $dbServers = \App\Models\Server::all();
@@ -57,7 +58,7 @@ class ServerController extends Controller
                 $live ? ($live['Players'] ?? 0) : 0,
                 $s->slots,
                 $live ? ($live['Port'] ?? null) : null,
-                ($live && isset($live['State']) && $live['State'] === 'running') ? 'online' : 'offline'
+                ($live && isset($live['State']) && strtolower($live['State']) === 'running') ? 'online' : 'offline'
             );
         }
 
@@ -105,7 +106,7 @@ class ServerController extends Controller
                 'players' => $live ? ($live['Players'] ?? 0) : 0,
                 'slots' => $s->slots,
                 'port' => $live ? ($live['Port'] ?? null) : null,
-                'status' => ($live && isset($live['State']) && $live['State'] === 'running') ? 'online' : 'offline'
+                'status' => ($live && isset($live['State']) && strtolower($live['State']) === 'running') ? 'online' : 'offline'
             ];
         }));
     }
@@ -128,31 +129,14 @@ class ServerController extends Controller
         ]);
     }
 
-    public function store(Request $request, GoApiService $goApiService, PayPalService $paypalService)
+    public function store(Request $request, GoApiService $goApiService)
     {
         $request->validate([
-            'name'  => 'required|string|max:255',
+            'name' => 'required|string|max:255',
             'slots' => 'required|integer|min:1|max:50',
         ]);
 
         $userId = Auth::check() ? (string) Auth::id() : null;
-
-        $subscription = Subscription::where('user_id', $userId)
-            ->where('status', 'ACTIVE')
-            ->first();
-
-        if (!$subscription) {
-            return redirect()->route('plans.index')
-                ->with('error', 'Vous devez avoir un abonnement actif pour créer un serveur.');
-        }
-
-        $paypalData = $paypalService->getSubscription($subscription->paypal_subscription_id);
-
-        if (($paypalData['status'] ?? '') !== 'ACTIVE') {
-            $subscription->update(['status' => $paypalData['status'] ?? 'CANCELLED']);
-            return redirect()->route('plans.index')
-                ->with('error', 'Votre abonnement PayPal est expiré ou annulé.');
-        }
 
         $dto = new CreateServerDTO(
             $request->input('name'),
@@ -160,9 +144,14 @@ class ServerController extends Controller
             'server-vintagestory:latest'
         );
 
-        $goApiService->createServer($dto, $userId);
+        try {
+            $goApiService->createServer($dto, $userId);
 
-        return redirect()->route('dashboard')
-            ->with('server_success', 'Serveur en cours de création !');
+            return redirect()->route('dashboard')
+                ->with('server_success', 'Serveur en cours de création !');
+        } catch (\Exception $e) {
+            return redirect()->back()
+                ->with('error', 'Impossible de contacter l\'API de création.');
+        }
     }
 }
