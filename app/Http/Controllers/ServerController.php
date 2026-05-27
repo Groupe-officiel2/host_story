@@ -32,6 +32,15 @@ class ServerController extends Controller
             $body = json_decode((string) $response->getBody(), true);
             if (is_array($body)) {
                 $liveData = collect($body)->keyBy('Name')->toArray();
+
+                // Suppression des serveurs qui n'existent plus sur Docker
+                $dbServers = \App\Models\Server::all();
+                foreach ($dbServers as $s) {
+                    if (!isset($liveData[$s->name])) {
+                        $s->delete();
+                    }
+                }
+
                 // Import des serveurs Docker vers la BDD Laravel si pas existants
                 foreach ($liveData as $live) {
                     \App\Models\Server::firstOrCreate(
@@ -82,6 +91,15 @@ class ServerController extends Controller
             $body = json_decode((string) $response->getBody(), true);
             if (is_array($body)) {
                 $liveData = collect($body)->keyBy('Name')->toArray();
+                
+                // Suppression des serveurs qui n'existent plus sur Docker
+                $dbServers = \App\Models\Server::all();
+                foreach ($dbServers as $s) {
+                    if (!isset($liveData[$s->name])) {
+                        $s->delete();
+                    }
+                }
+
                 // Import
                 foreach ($liveData as $live) {
                     \App\Models\Server::firstOrCreate(
@@ -117,11 +135,13 @@ class ServerController extends Controller
             return response()->json(['error' => 'Unauthorized'], 403);
         }
 
-        $server = \App\Models\Server::create([
-            'id' => $request->id,
-            'name' => $request->name,
-            'slots' => $request->slots,
-        ]);
+        $server = \App\Models\Server::updateOrCreate(
+            ['name' => $request->name],
+            [
+                'id' => $request->id,
+                'slots' => $request->slots,
+            ]
+        );
 
         return response()->json([
             'status' => 'created',
