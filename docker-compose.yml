@@ -20,7 +20,7 @@ services:
     working_dir: /var/www
     volumes:
       - ./:/var/www
-    command: sh -c "[ ! -d 'node_modules' ] && npm install; npm run dev"
+    command: sh -c "if [ ! -x node_modules/.bin/vite ]; then npm install; fi && npm run dev -- --host 0.0.0.0"
     ports:
       - "5173:5173"
 
@@ -28,10 +28,13 @@ services:
     image: nginx:alpine
     container_name: hoststory-nginx
     ports:
-      - "8000:80"
+      - "80:80"
+      - "443:443"
     volumes:
       - .:/var/www
       - ./docker/nginx:/etc/nginx/conf.d
+      - ./certbot/www:/var/www/certbot
+      - ./certbot/conf:/etc/letsencrypt
     depends_on:
       - app
     networks:
@@ -50,15 +53,6 @@ services:
     networks:
       - hoststory
 
-  mailpit:
-    image: axllent/mailpit:latest
-    container_name: hoststory-mailpit
-    ports:
-      - "8026:8025"
-      - "1025:1025"
-    networks:
-      - hoststory
-
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
     container_name: hoststory-phpmyadmin
@@ -72,6 +66,21 @@ services:
       - db
     networks:
       - hoststory
+  
+  certbot:
+    image: certbot/certbot
+    container_name: certbot
+    profiles:
+      - certbot
+    volumes:
+      - ./certbot/www:/var/www/certbot
+      - ./certbot/conf:/etc/letsencrypt
+    
+    command: >
+      certonly --non-interactive --keep-until-expiring --webroot --webroot-path=/var/www/certbot
+       --email hoststory.game@gmail.com --agree-tos --no-eff-email
+       -d hoststory.fr -d www.hoststory.fr
+
 
 volumes:
   mysql-data:
