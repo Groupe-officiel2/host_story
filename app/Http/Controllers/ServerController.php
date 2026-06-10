@@ -15,17 +15,7 @@ class ServerController extends Controller
 {
     public function index()
     {
-        
-
-        $servers = [
-            new ServerDTO(1, "Pokemon", 4, 5),
-            new ServerDTO(2, "Survival", 2, 10),
-            new ServerDTO(3, "Minecraft", 6, 20),
-            new ServerDTO(4, "Arc", 3, 10),
-            new ServerDTO(5, "example", 30, 50),
-        ];
-
-        $exampleDTO = new CreateServerDTO("Test", 5);
+        $servers = Server::all(); // récupère tous les serveurs en BDD
 
         return view('servers.index', compact('servers'));
     }

@@ -26,9 +26,8 @@
                                 <strong>Nom :</strong> {{ $server->name }}
                             </p>
                             
-                            <p><strong>Joueurs :</strong> {{ $server->players }} / {{ $server->slots }}</p>
-                            <p><strong>ID :</strong> {{ $server->id }}</p>
-                            <button class="access-btn">Accéder</button>
+                            <p><strong>Joueurs :</strong>  / {{ $server->slots }}</p>
+                            <a href="{{ route('servers.show', $server->id) }}" class="access-btn">Accéder</a>
                             @if(session('status'))
                                 <div class="alert alert-success">
                                     {{ session('status') }}
