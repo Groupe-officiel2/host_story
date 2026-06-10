@@ -107,6 +107,12 @@ class ServerController extends Controller
         // Appel à l'API Go
         $response = $goApiService->createServer($dto, $userId);
 
+        $server = Server::create([
+            'id' => (string) \Illuminate\Support\Str::uuid(),
+            'name' => $request->input('name'),
+            'slots' => $request->input('slots'),
+        ]);
+
         return redirect()->route('dashboard')->with('server_success', 'Serveur en cours de création !');
     }
     
