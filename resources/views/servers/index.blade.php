@@ -1,6 +1,7 @@
 <x-profile-layout>
 
     <link rel="stylesheet" href="{{ asset('css/Servers.css') }}">
+    
 
     <div class="page-container">
 
@@ -22,10 +23,22 @@
                 @else
                     @foreach($servers as $server)
                         <div class="server-card">
-                            <p><strong>Nom :</strong> {{ $server->name }}</p>
-                            <p><strong>Joueurs :</strong> {{ $server->players }} / {{ $server->slots }}</p>
-                            <p><strong>ID :</strong> {{ $server->id }}</p>
-                            <button class="access-btn">Accéder</button>
+
+                                <input type="hidden" name="name" value="{{ $server->name }}">
+                                <button class="start-btn" data-name="{{ $server->name }}"><img src="/images/hourglass.svg" width="10" height="10" alt="Loading..."></button>
+
+
+                            <p>
+                                <strong>Nom :</strong> {{ $server->name }}
+                            </p>
+                            
+                            <p><strong>Joueurs :</strong>  / {{ $server->slots }}</p>
+                            <a href="{{ route('servers.show', $server->id) }}" class="access-btn">Accéder</a>
+                            @if(session('status'))
+                                <div class="alert alert-success">
+                                    {{ session('status') }}
+                                </div>
+                            @endif
                         </div>
                     @endforeach
                 @endif
@@ -67,46 +80,5 @@
         </div>
     </div>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-
-            // ===== OPEN / CLOSE MODAL =====
-            const openBtn = document.getElementById('openCreateServer');
-            const modal = document.getElementById('createServerModal');
-            const closeBtn = modal.querySelector('.close');
-
-            if(openBtn && modal && closeBtn){
-                openBtn.addEventListener('click', () => {
-                    modal.style.display = 'flex';
-                    document.body.classList.add('modal-open');
-                });
-
-                closeBtn.addEventListener('click', () => {
-                    modal.style.display = 'none';
-                    document.body.classList.remove('modal-open');
-                });
-
-                window.addEventListener('click', (e) => {
-                    if(e.target === modal){
-                        modal.style.display = 'none';
-                        document.body.classList.remove('modal-open');
-                    }
-                });
-            }
-
-            // ===== CALCUL PRIX =====
-            const slotsInput = document.getElementById('slots');
-            const priceSpan = document.getElementById('price');
-
-            if(slotsInput && priceSpan){
-                slotsInput.addEventListener('input', () => {
-                    const slots = parseInt(slotsInput.value) || 0;
-                    const price = slots * 2;
-                    priceSpan.innerText = price + ' €';
-                });
-            }
-
-        });
-    </script>
-
+    
 </x-profile-layout>

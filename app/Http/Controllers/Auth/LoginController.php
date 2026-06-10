@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
+use Firebase\JWT\JWT;
 
 class LoginController extends Controller
 {
@@ -18,19 +19,36 @@ class LoginController extends Controller
 
     public function login(Request $request)
     {
+        // 1. Validation des champs
         $credentials = $request->validate([
-            'email' => ['required', 'email'],
+            'email'    => ['required', 'email'],
             'password' => ['required'],
         ]);
 
-        if (Auth::attempt($credentials, $request->boolean('remember'))) {
-            $request->session()->regenerate();
-            return redirect()->intended('dashboard');
+        // 2. Tentative de connexion
+        if (!Auth::attempt($credentials, $request->boolean('remember'))) {
+            throw ValidationException::withMessages([
+                'email' => __('auth.failed'),
+            ]);
         }
 
-        throw ValidationException::withMessages([
-            'email' => __('auth.failed'),
-        ]);
+        $request->session()->regenerate();
+
+        // 3. Génération du JWT
+        $user = Auth::user();
+
+        $payload = [
+            'sub' => (string) $user->id,      // ID utilisateur
+            'role' => $user->role ?? 'user',  // ← ajouter le role
+            'exp'  => (int)(time() + 60 * 60 * 24),  // ← Expire dans 24h
+        ];
+
+        $jwt = JWT::encode($payload, env('JWT_SECRET'), 'HS256');
+
+        // 4. Stockage du token en session
+        session(['token' => $jwt]);
+
+        return redirect()->intended('dashboard');
     }
 
     public function destroy(Request $request)

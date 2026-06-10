@@ -17,10 +17,16 @@ Route::middleware('guest')->group(function () {
 });
 
 // --- (Espace Membre) ---
-Route::middleware('auth')->group(function () {
+Route::middleware('auth', 'web')->group(function () {
     // Page d'accueil après connexion (Dashboard)
-    Route::get('/dashboard', [ServerController::class, 'index'])
-        ->name('dashboard');
+    Route::get('/dashboard', [ServerController::class, 'index'])->name('dashboard');
+    Route::get('/servers', [ServerController::class, 'index'])->name('servers.index');
+    Route::post('/server-status', [ServerController::class, 'status']);
+
+    Route::get('/servers/{id}', [ServerController::class, 'show'])->name('servers.show');
+
+    // Toggle server
+    Route::post('/toggle-server', [ServerController::class, 'toggle'])->name('servers.toggle');
     
     // Création d'un serveur
     Route::post('/servers', [ServerController::class, 'store'])
