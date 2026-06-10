@@ -1,6 +1,7 @@
 <x-profile-layout>
 
     <link rel="stylesheet" href="{{ asset('css/Servers.css') }}">
+    
 
     <div class="page-container">
 
@@ -18,58 +19,8 @@
                         <div class="server-card">
 
                                 <input type="hidden" name="name" value="{{ $server->name }}">
-                                <button class="start-btn" data-name="{{ $server->name }}">⏳</button>
-<script>
-async function updateServerStatus(btn) {
-    const name = btn.dataset.name;
+                                <button class="start-btn" data-name="{{ $server->name }}"><img src="/images/hourglass.svg" width="10" height="10" alt="Loading..."></button>
 
-    const response = await fetch('/server-status', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'X-CSRF-TOKEN': '{{ csrf_token() }}'
-        },
-        body: JSON.stringify({ name })
-    });
-
-    const status = await response.text();
-
-    if (status.includes("running")) {
-        btn.textContent = "■";
-        btn.style.color = "red";
-    } else {
-        btn.textContent = "▶";
-        btn.style.color = "green";
-    }
-}
-
-document.querySelectorAll('.start-btn').forEach(btn => {
-    updateServerStatus(btn); // 🔥 mise à jour au chargement
-
-    btn.addEventListener('click', async () => {
-        btn.textContent = "⏳";
-
-        const response = await fetch('/toggle-server', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRF-TOKEN': '{{ csrf_token() }}'
-            },
-            body: JSON.stringify({ name: btn.dataset.name })
-        });
-
-        const result = await response.text();
-
-        if (result.includes("started")) {
-            btn.textContent = "■";
-            btn.style.color = "red";
-        } else if (result.includes("stopped")) {
-            btn.textContent = "▶";
-            btn.style.color = "green";
-        }
-    });
-});
-</script>
 
                             <p>
                                 <strong>Nom :</strong> {{ $server->name }}
@@ -123,46 +74,5 @@ document.querySelectorAll('.start-btn').forEach(btn => {
         </div>
     </div>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-
-            // ===== OPEN / CLOSE MODAL =====
-            const openBtn = document.getElementById('openCreateServer');
-            const modal = document.getElementById('createServerModal');
-            const closeBtn = modal.querySelector('.close');
-
-            if(openBtn && modal && closeBtn){
-                openBtn.addEventListener('click', () => {
-                    modal.style.display = 'flex';
-                    document.body.classList.add('modal-open');
-                });
-
-                closeBtn.addEventListener('click', () => {
-                    modal.style.display = 'none';
-                    document.body.classList.remove('modal-open');
-                });
-
-                window.addEventListener('click', (e) => {
-                    if(e.target === modal){
-                        modal.style.display = 'none';
-                        document.body.classList.remove('modal-open');
-                    }
-                });
-            }
-
-            // ===== CALCUL PRIX =====
-            const slotsInput = document.getElementById('slots');
-            const priceSpan = document.getElementById('price');
-
-            if(slotsInput && priceSpan){
-                slotsInput.addEventListener('input', () => {
-                    const slots = parseInt(slotsInput.value) || 0;
-                    const price = slots * 2;
-                    priceSpan.innerText = price + ' €';
-                });
-            }
-
-        });
-    </script>
-
+    
 </x-profile-layout>

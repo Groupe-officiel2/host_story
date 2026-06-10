@@ -23,6 +23,8 @@ Route::middleware('auth', 'web')->group(function () {
     Route::get('/servers', [ServerController::class, 'index'])->name('servers.index');
     Route::post('/server-status', [ServerController::class, 'status']);
 
+    Route::get('/servers/{id}', [ServerController::class, 'show'])->name('servers.show');
+
     // Toggle server
     Route::post('/toggle-server', [ServerController::class, 'toggle'])->name('servers.toggle');
 
