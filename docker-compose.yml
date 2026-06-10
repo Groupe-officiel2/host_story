@@ -10,6 +10,8 @@ services:
     depends_on:
       - db
       - mailpit
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     networks:
       - hoststory
 

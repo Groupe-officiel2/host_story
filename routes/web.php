@@ -27,6 +27,11 @@ Route::middleware('auth', 'web')->group(function () {
 
     // Toggle server
     Route::post('/toggle-server', [ServerController::class, 'toggle'])->name('servers.toggle');
+    
+    // Création d'un serveur
+    Route::post('/servers', [ServerController::class, 'store'])
+        ->name('servers.store');
+
 
     // Déconnexion de l'utilisateur
     Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
