@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Server;
+use App\Models\server_user;
 use App\DTO\ServerDTO;
 use App\DTO\CreateServerDTO;
 use Firebase\JWT\JWT;
@@ -16,7 +17,11 @@ class ServerController extends Controller
 {
     public function index()
     {
-        $servers = Server::all(); // récupère tous les serveurs en BDD
+        $userId = Auth::check() ? (string) Auth::id() : null;
+
+        $servers = Server::whereHas('users', function ($query) use ($userId) {
+            $query->where('user_id', $userId);
+        })->get();
 
         return view('servers.index', compact('servers'));
     }
@@ -112,6 +117,12 @@ class ServerController extends Controller
             'name' => $request->input('name'),
             'slots' => $request->input('slots'),
         ]);
+
+        $serverUser = server_user::create([
+            'server_id' => $server->id,
+            'user_id' => $userId,
+        ]);
+
 
         return redirect()->route('dashboard')->with('server_success', 'Serveur en cours de création !');
     }

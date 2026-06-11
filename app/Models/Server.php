@@ -19,4 +19,15 @@ class Server extends Model
         'name',
         'slots',
     ];
+
+
+    public function users()
+    {
+        return $this->belongsToMany(
+            \App\Models\User::class,
+            'server_user',
+            'server_id',
+            'user_id'
+        );
+    }
 }
